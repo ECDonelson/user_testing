@@ -1,0 +1,101 @@
+<html>
+<head>
+    <style>
+        @keyframes FadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        html, body {
+            height: 0px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-family: arial;
+            animation: FadeIn 1s;
+            color: #fff;
+        }
+
+        #background {
+            position: absolute;
+            top: 0;
+            z-index: -1;
+        }
+
+            #background img {
+                width: 100%;
+            }
+
+        #page {
+            position: absolute;
+            bottom: 5%;
+            margin: 5%;
+            animation-delay: 1s;
+            animation: FadeIn 2s;
+        }
+
+        .btn {
+            border: none;
+            padding: 0.8em 2.5em;
+            color: white;
+            font-style: 1.2em;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            background: none;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.45);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+            .btn:before, .btn:after {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                border-radius: 10em;
+                -webkit-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%);
+                width: 105%;
+                height: 105%;
+                content: "";
+                z-index: -2;
+                background-size: 400% 400%;
+                background: linear-gradient( 60deg, #b7a1ed, #6c7ee5, #3b519c );
+            }
+
+            .btn:before {
+                -webkit-filter: blur(7px);
+                filter: blur(7px);
+                -webkit-transition: all 0.25s ease;
+                transition: all 0.25s ease;
+                -webkit-animation: pulse 10s infinite ease;
+                animation: pulse 10s infinite ease;
+                background: #6c7ee5;
+            }
+
+            .btn:after {
+                -webkit-filter: blur(0.3px);
+                filter: blur(0.3px);
+            }
+
+            .btn:hover:before {
+                width: 110%;
+                height: 110%;
+            }
+
+        .btn-secondary:before, .btn-secondary:after {
+            background: linear-gradient( 60deg, #3b519c, #6c7ee5, #3b519c );
+        }
+    </style>
+</head>
+<body>
+    <div id="background"><img src="/images/fullpage_logo.png" />
+        <div id="page"><a class="btn" href="/auth/start">Login to Get Testing!</a></div>
+    </div>
+</body>
+</html>

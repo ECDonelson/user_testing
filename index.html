@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>User Testing Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+          rel="stylesheet" type="text/css" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles/custom_styles.css">
+    <style>
+        #schedule_date-error {
+            display: none !important;
+        }
+
+        #myBtn {
+            display: flex;
+            margin: 0 0 2% 0;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-arrow-up"></i></button>
+    <div id="wrapper">
+        <div class="pos-f-t" style="width: 100%;z-index: 1; position: fixed;">
+            <nav class="navbar navbar-dark bg-dark" style="width: 100%;">
+                <a class="navbar-brand" href="#">UserTesting.com</a>
+                <div class="bg-dark">
+                    <nav class="navbar-expand-lg">
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link" id="btn-url" onclick="url()" style="cursor: pointer;">URL</a>
+                            <a class="nav-item nav-link" d="bt-image" onclick="image_task()" style="cursor: pointer;">Image</a>
+                            <a class="nav-item nav-link" id="btn-task" onclick="task()" style="cursor: pointer;">Task</a>
+                            <a class="nav-item nav-link" id="btn-verbal-response" onclick="verbal_response()" style="cursor: pointer;">Verbal Response</a>
+                            <a class="nav-item nav-link" id="btn-multiple-choice" onclick="multiple_choice()" style="cursor: pointer;">Multiple Choice</a>
+                            <a class="nav-item nav-link" id="btn-written-response" onclick="written_response()" style="cursor: pointer;">Written Response</a>
+                            <a class="nav-item nav-link" id="btn-rating" onclick="rating_scale()" style="cursor: pointer;">Rating Scale</a>
+                        </div>
+                    </nav>
+                </div>
+                <button id="navbar-toggler" onclick="collapse(this)" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="bg-dark">
+                    <div class="collapse" id="navbarToggleExternalContent">
+                        <div style="color: white;">
+                            <h6>NOTE:</h6>
+                            <ul>
+                                <li>
+                                    You may choose as many options as you like, including choosing each option more than
+                                    once.
+                                </li>
+                                <li>To submit the form, you must choose at least one option.</li>
+                                <li>
+                                    You will not be able to submit the form if you have left a chosen option from the
+                                    menu empty. You must provide inputs to all chosen options.
+                                </li>
+                                <li>
+                                    Your test draft will be reviewed and approved before proceeding, if you have any
+                                    questions on this please email <br /> <a href="mailto:vi-usertestingreviewer@microsoft.com">
+                                        vi-usertestingreviewer@microsoft.com
+                                    </a>
+                                </li>
+                                <li>
+                                    If you have any questions or issues with this form, please contact Andrew Kim
+                                    (anki@microsoft.com) <a href="mailto:anki@microsoft.com">anki@microsoft.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="container-fluid" style="z-index: -1;">
+            <div class="alert alert-danger fail-msg d-none" role="alert">
+                There was an error processing your request, please try again
+            </div>
+            <p class="review-text d-none" style="color:white;text-align:center;">
+                Please feel free to review/edit your
+                form then click Submit once you're ready!
+            </p>
+            <div class="pre-review">
+                <div class="">
+                    <div class="form-row">
+                        <div class="col-md-12" id="body-wrapper" style="width: 98%; margin: 5% 0 0 0;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="contentForm" enctype="multipart/form-data">
+                                        <h3 class="user_heading">Study Creator</h3>
+
+                                        <div class="form-group">
+                                            <div class="alert alert-danger form-title-msg d-none " role="alert">
+                                                Please provide a form title!
+                                            </div>
+                                            <h5 class="card-title">Form Title</h5>
+
+                                            <input type="text" name="title" id="title" class="form-control"
+                                                   placeholder="Form Title">
+                                        </div>
+
+                                        <h5 class="card-title">Scenario</h5>
+                                        <div class="form-group">
+                                            <label for="text-scenario">
+                                                Set the scene and tell participants what they
+                                                need to know to do the task.
+                                            </label>
+                                            <textarea name="scenario" class="form-control required" id="text-scenario"
+                                                      placeholder="Type your scenario here..." rows="6"
+                                                      maxlength="750"></textarea>
+                                            <small class="form-text text-muted float-right">
+                                                Characters left: <span id="characters-scenario"></span>
+                                            </small>
+                                        </div>
+                                        <h5 class="card-title">Test Plan</h5>
+                                        <div class="card mb-3">
+                                            <div class="row">
+                                                <div class="d-flex p-4">
+                                                    <img src="images/avatar-5.jpg" alt="..."
+                                                         class="me-3 rounded-circle avatar-sm">
+                                                    <div>
+                                                        <h5 class="mt-0 font-size-18">Participant View</h5>
+                                                        <label>
+                                                            Record participant faces during the test. This requires
+                                                            participants to use the Chrome browser or mobile
+                                                            device.
+                                                        </label>
+
+                                                    </div>
+                                                    <!-- Default checked -->
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                               id="customSwitch1">
+                                                        <label class="custom-control-label" for="customSwitch1"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card mb-3">
+                                            <div class="row">
+                                                <div class="d-flex p-4">
+                                                    <div>
+                                                        <h5 class="mt-0 font-size-18">Select Screener:</h5>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="screener"
+                                                                   id="flexRadioDefault1" value="Analyst">
+                                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                                Analyst
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="screener"
+                                                                   id="flexRadioDefault2" value="Leader/Manager">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Leader/Manager
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                    <!-- Default checked -->
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card mb-3">
+                                            <div class="row">
+                                                <div class="d-flex p-4">
+                                                    <div>
+                                                        <h5 class="mt-0 font-size-18">How Many Participants</h5>
+                                                        <label>
+                                                            Note: The first 2 participants will be a test pilot so
+                                                            you can review and make changes before opening it up to a
+                                                            larger audience
+                                                        </label>
+                                                        <br />
+                                                        <select class="form-select" aria-label="Default select example"
+                                                                name="participants_number">
+                                                            <option selected value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
+                                                            <option value="11">11</option>
+                                                            <option value="12">12</option>
+                                                            <option value="13">13</option>
+                                                            <option value="14">14</option>
+                                                            <option value="15">15</option>
+                                                        </select>
+
+
+                                                    </div>
+                                                    <!-- Default checked -->
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="form-group">
+
+                                                <label for="text-scenario">
+                                                    Who do you want to share the test results
+                                                    with (each person will need to create a UserTesting.com account to
+                                                    access the results):
+
+                                                    alias@microsoft.com (do not use firstname.lastname@microsoft.com)
+                                                </label>
+                                                <div class="input-group mb-3">
+                                                    <input type="text" id="participant-input" class="form-control"
+                                                           placeholder="Participant's username">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary add-participant"
+                                                                type="button">
+                                                            Add Participant
+                                                        </button>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary remove-participant"
+                                                                type="button">
+                                                            Remove Last Participant
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <textarea id="participant-list" name="participants" class="form-control"
+                                                          rows="6" maxlength="750" disabled></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Block for embeded types -->
+
+                                        <div class="alert alert-info d-none" id="main_content_type" role="alert">
+                                            <div class="content_type mb-3">
+                                                <label>
+                                                    Please choose a date you would like to schedule the test for:
+                                                    MM/DD/YYYY
+                                                </label>
+
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control  hasDatepicker required"
+                                                           id="datepicker" name="schedule_date">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text" id="basic-addon2">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden">
+                                            <button class="btn btn-primary float-right review-form">
+                                                Review Form
+                                                Submission
+                                            </button>
+                                            <div id="for_scroll"></div>
+                                        </div>
+                                    </form>
+                                    <!-- URL -->
+                                    <div class="card mb-3 card_url d-none card-spec">
+                                        <div class="card-header">
+                                            <strong>URL</strong>
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="url">URL</label>
+                                                <input type="url" name="url[url][]" class="form-control required url"
+                                                       placeholder="https://example.com" autofocus>
+                                                <small id="emailHelp" class="form-text text-muted">
+                                                    People are redirected
+                                                    to this URL when they begin the task
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1 ">Instruction text</label>
+                                                <textarea class="form-control text-url required"
+                                                          name="url[instruction_text][]" rows="6" maxlength="200"></textarea>
+                                                <small class="form-text text-muted float-right">
+                                                    Characters left: <span class="characters-url"></span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Image task -->
+                                    <div class="card mb-3 image_task d-none">
+                                        <div class="card-header">
+                                            <strong>Image Task</strong>
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <strong>NOTE:</strong> <label>
+                                                        Please provide relevant names to your
+                                                        Image files. This allows the test creator to assign images to
+                                                        accurate tasks
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-9">
+
+                                                    <div class="form-group">
+                                                        <label for="exampleFormControlTextarea1">Image</label>
+                                                        <input type="file" id="img" class="form-control required"
+                                                               name="image_task[img][]" accept="image/*"
+                                                               onchange="loadImg()">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <img src="images/placeholder.png" id="frame" width="100px"
+                                                         height="100px" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Instruction text</label>
+                                                <small class="form-text text-muted">
+                                                    Participants will be shown the
+                                                    provided image when they begin this task.
+                                                </small>
+                                                <textarea class="form-control text-image required"
+                                                          name="image_task[instruction_text][]" rows="6"
+                                                          maxlength="200"></textarea>
+                                                <small class="form-text text-muted float-right">
+                                                    Characters left: <span class="characters-image"></span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- task -->
+                                    <div class="card mb-3 task card-spec d-none">
+                                        <div class="card-header">
+                                            <strong>Task</strong>
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <textarea name="task[task_text][]"
+                                                          class="form-control text-task required" rows="6" maxlength="1000"
+                                                          placeholder="Type your task here"></textarea>
+                                                <small class="form-text text-muted float-right">
+                                                    Characters left: <span class="characters-task"></span>
+                                                </small>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" name="task[blur_video][]" value="Yes"
+                                                       class="form-check-input">
+                                                <label class="form-check-label" for="blur_video">
+                                                    Blur video to hide
+                                                    <a>PII</a>
+                                                </label>
+                                            </div>
+                                            <h5>Task metrics</h5>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" name="task[success_metrics][]" value="Yes"
+                                                       class="form-check-input">
+                                                <label class="form-check-label" for="task_success">
+                                                    <strong>
+                                                        Success:
+                                                    </strong>Ask participans if they completed the task
+                                                    successfully
+                                                </label>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" name="task[difficulty_metrics][]" value="Yes"
+                                                       class="form-check-input">
+                                                <label class="form-check-label"
+                                                       for="task_difficulty">
+                                                    <strong>Difficulty: </strong>Ask participans
+                                                    to rate the difficulty of this task
+                                                </label>
+                                            </div>
+                                            <a href="#">Find out more about using tast metrics</a>
+                                        </div>
+                                    </div>
+                                    <!-- Verbal Response: -->
+                                    <div class="card mb-3 verbal_response d-none card-spec">
+                                        <div class="card-header">
+                                            <strong>Verbal Response</strong>
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <textarea class="form-control text-verbal required"
+                                                          name="verbal[verbal_response_question][]" rows="6" maxlength="1000"
+                                                          placeholder="Type your verbal response question here ..."></textarea>
+                                                <small class="form-text text-muted float-right">
+                                                    Characters left: <span class="characters-verbal"></span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Written Response -->
+                                    <div class="card mb-3 written_response d-none ">
+                                        <div class="card-header">
+                                            <strong>Written Response</strong>
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <textarea class="form-control text-written required"
+                                                          name="written[written_response_question][]"
+                                                          placeholder="Type your written response question here ..." rows="6"
+                                                          maxlength="1000"></textarea>
+                                                <small class="form-text text-muted float-right">
+                                                    Characters left: <span class="characters-written"></span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Multiple Choice -->
+                                    <div class="card mb-3 multiple_choice d-none">
+                                        <div class="card-header">
+                                            <strong>Multiple Choice</strong>
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <textarea name="multiple[multiple_choice_question][]"
+                                                          class="form-control required text-multiple"
+                                                          placeholder="Type your multiple choice question here ..." rows="6"
+                                                          maxlength="1000"></textarea>
+                                                <small class="form-text text-muted float-right">
+                                                    Characters left: <span class="characters-multiple"></span>
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="multiple[option_1][]"
+                                                       class="form-control required" placeholder="Answer">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="multiple[option_2][]"
+                                                       class="form-control required" placeholder="Answer">
+                                            </div>
+                                            <div class="more-options"></div>
+
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                    onclick="add_more_options(this)">
+                                                Add another answer
+                                            </button>
+                                            <small class="form-text text-muted text-red">
+                                                Please specify at least two
+                                                answer options.
+                                            </small>
+                                            <small class="form-text text-muted text-red mb-3">
+                                                Please enter text for all
+                                                choices.
+                                            </small>
+                                            <h5>Select answer type</h5>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       name="multiple[answer_type][]" value="more than one answer">
+                                                <label class="form-check-label" for="">
+                                                    Allow participants to select <strong>more than one answer</strong>
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       name="multiple[answer_type][]" value="only one answer" checked>
+                                                <label class="form-check-label" for="">
+                                                    Allow participants to select <strong>only one answer</strong>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Rating Scale -->
+                                    <div class="card mb-3 rating_scale d-none">
+                                        <div class="card-header">
+                                            <strong>Rating Scale</strong>
+                                            <button type="button" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <textarea class="form-control text-rating required"
+                                                          name="rating[rating_scale_question][]"
+                                                          placeholder="Type your rating scale question here ..." rows="6"
+                                                          maxlength="1000"></textarea>
+                                                <small class="form-text text-muted float-right">
+                                                    Characters left: <span class="characters-rating"></span>
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-control required options_rating"
+                                                        name="rating[rating_options][]">
+                                                    <option value=""> --- Select Below ---</option>
+                                                    <option value="Strongly disagree-strongly agree">
+                                                        Strongly disagree -
+                                                        Strongly agree
+                                                    </option>
+                                                    <option value="Not at all satisfied-Very satisfied">
+                                                        Not at all
+                                                        satisfied - Very satisfied
+                                                    </option>
+                                                    <option value="Not at all likely-Very likely">
+                                                        Not at all likely -
+                                                        Very likely
+                                                    </option>
+                                                    <option value="Much worse-Much better">
+                                                        Much worse - Much better
+                                                    </option>
+                                                    <option value="Poor-Excellent">Poor - Excellent</option>
+                                                    <option value="Very difficult-Very easy">
+                                                        Very difficult - Very easy
+                                                    </option>
+                                                    <option value="Not at all helpfull-Very helpfull">
+                                                        Not at all
+                                                        helpfull - Very helpfull
+                                                    </option>
+                                                    <option value="Not at all clear-Very clear">
+                                                        Not at all clear - Very
+                                                        clear
+                                                    </option>
+                                                    <option value="Not at all engaging-Very engagin">
+                                                        Not at all engaging
+                                                        - Very engagin
+                                                    </option>
+                                                    <option value="Not at all usefull-Very usefull">
+                                                        Not at all usefull -
+                                                        Very usefull
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input name="rating[first_endpoint][]" type="text"
+                                                               class="form-control first_endpoint required"
+                                                               placeholder="Endpoint label">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input name="rating[second_endpoint][]" type="text"
+                                                               class="form-control second_endpoint required"
+                                                               placeholder="Endpoint label">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 side-menu" style="margin: 5% 0 0 0; display: none;">
+                            <h6 class="mt-3">NOTE:</h6>
+                            <ul>
+                                <li>
+                                    You may choose as many options as you like, including choosing each option more than
+                                    once.
+                                </li>
+                                <li>To submit the form, you must choose at least one option.</li>
+                                <li>
+                                    You will not be able to submit the form if you have left a chosen option from the
+                                    menu empty. You must provide inputs to all chosen options.
+                                </li>
+                                <li>
+                                    Your test draft will be reviewed and approved before proceeding, if you have any
+                                    questions on this please email <br /> <a href="mailto:vi-usertestingreviewer@microsoft.com">
+                                        vi-usertestingreviewer@microsoft.com
+                                    </a>
+                                </li>
+                                <li>
+                                    If you have any questions or issues with this form, please contact Andrew Kim
+                                    (anki@microsoft.com) <a href="mailto:anki@microsoft.com">anki@microsoft.com</a>
+                                </li>
+                            </ul>
+
+
+                            <h6 class="mt-10">Assets</h6>
+                            <div class="asset-option" id="btn-url" onclick="url()">URL</div>
+                            <div class=" asset-option" id="bt-image" onclick="image_task()">Image</div>
+                            <h6 class="mt-3">Tasks and questions</h6>
+                            <div class="asset-option" id="btn-task" onclick="task()">Task</div>
+                            <div type="button" class=" asset-option" id="btn-verbal-response"
+                                 onclick="verbal_response()">Verbal response</div>
+                            <div class="asset-option" id="btn-multiple-choice" onclick="multiple_choice()">
+                                Multiple
+                                choice
+                            </div>
+                            <div class="asset-option" id="btn-written-response" onclick="written_response()">
+                                Written
+                                response
+                            </div>
+
+                            <div class="asset-option" id="btn-rating" onclick="rating_scale()">Rating scale</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-review d-none">
+                <button type="submit" style="margin: 0 5% 0 0;" class="btn btn-primary float-right submit-form">Submit</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+        integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.25.0/axios.min.js"
+        integrity="sha512-/Q6t3CASm04EliI1QyIDAA/nDo9R8FQ/BULoUFyN4n/BDdyIxeH7u++Z+eobdmr11gG5D/6nPFyDlnisDwhpYA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+    var mulcount = 3;
+    var tskcount = 0;
+    $(document).ready(function () {
+        var images = [];
+        localStorage.setItem("images", JSON.stringify(images));
+        //datepicker
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+
+        $(".add-participant").click(function () {
+            const inputVal = $("#participant-input");
+            const participantList = $("#participant-list");
+            if (participantList.val() === '') {
+                participantList.val(inputVal.val());
+            }
+            else {
+                participantList.val(`${participantList.val()}, ${inputVal.val()}`)
+            }
+            inputVal.val("");
+
+        });
+
+
+        $(".remove-participant").click(function (e) {
+            const participantList = $("#participant-list");
+            const listArray = participantList.val().split(",");
+            listArray.pop();
+            participantList.val(listArray);
+        })
+        $(".review-form").click(function (e) {
+            e.preventDefault();
+            const formTitle = $("#title");
+            const formHtml = $("form").clone();
+            if (formTitle.val()) {
+                $('.review-text').removeClass('d-none');
+                $(".pre-review").hide();
+                $(".post-review").removeClass('d-none');
+                $('.post-review').prepend(formHtml);
+                $(".review-form").hide();
+            }
+            else {
+                $(".form-title-msg").removeClass('d-none')
+                formTitle.focus();
+                setTimeout(() => { $(".form-title-msg").addClass('d-none') }, 5000);
+            }
+
+        });
+
+        $(".submit-form").click(function (e) {
+            e.preventDefault();
+            const formTitle = $("#title");
+            const formData = $("#contentForm").serializeArray();
+            const participants = { name: "participants", value: $("#participant-list").val() };
+            formData.push(participants);
+            const imageDat = JSON.parse(localStorage.getItem("images"));
+            const parsedImages = imageDat.map(e => { return { name: "image", value: e.binary, fileName: e.name } });
+            parsedImages.forEach((e, i) => {
+                const arrayItem = formData.filter(e => e.name === `image_task[instruction_text][${i}]`);
+                const indexed = formData.indexOf(arrayItem[0]);
+                formData.splice(indexed, 0, e);
+            });
+            const names = formData.ap(e => e.name);
+            formData.forEach((item, i) => {
+                const name = names[i].match(/\[(.*?)\]/) ? names[i].match(/\[(.*?)\]/)[1] : names[i];
+                const value = formData[i].value;
+            });
+            const title = formData.filter(data => data.name === "title")[0].value.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
+            const formattedTitle = title.replace(/\s+/g, '_');
+            const date = new Date().toISOString().replaceAll(':', "-").replace('.', '-').replace('Z', '');
+            const fileTitle = `${formattedTitle.toLowerCase()}_${date}`;
+
+            const formInfo = {
+                fileTitle,
+                dateSubmitted: date
+            }
+
+            axios.post('/submitForm', {
+                data: {
+                    formData,
+                    formInfo
+                }
+            })
+                .then(function (response) {
+                    window.location.href = "/thankyou";
+                })
+                .catch(function (error) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    $(".fail-msg").removeClass('d-none');
+
+                });
+
+
+
+
+        })
+
+        $('#datepicker').datepicker({
+            startDate: date,
+            format: 'mm/dd/yyyy',
+            autoclose: true,
+            daysOfWeekDisabled: [0, 6],
+            //datesDisabled: ['30/12/2021', '29/12/2021']
+        });
+
+
+
+        $('body').on('click', '.close', function () {
+            $(this).closest('.card').remove();
+            if ($('#main_content_type').find('.card').length == 0) {
+                $('#main_content_type').addClass('d-none');
+            }
+        });
+        $("#contentForm").validate();
+        //scenario
+        var text_scenario = 750;
+
+        $('#characters-scenario').html(text_scenario);
+
+        $('#text-scenario').keyup(function () {
+            var text_length = $('#text-scenario').val().length;
+            var text_remaining = text_scenario - text_length;
+            $('#characters-scenario').html(text_remaining);
+        });
+        //URL
+        var text_url = 200;
+        $('.characters-url').html(text_url);
+        $('body').on('keyup', '.text-url', function () {
+            var text_length = $(this).val().length;
+            var text_remaining = text_image - text_length;
+            $(this).next().find('.characters-url').html(text_remaining);
+        });
+        //image task
+        var text_image = 200;
+        $('.characters-image').html(text_image);
+
+        $('body').on('keyup', '.text-image', function () {
+            var text_length = $(this).val().length;
+            var text_remaining = text_image - text_length;
+            $(this).next().find('.characters-image').html(text_remaining);
+        });
+        //task
+        var text_task = 1000;
+        $('.characters-task').html(text_task);
+
+        $('body').on('keyup', '.text-task', function () {
+            var text_length = $(this).val().length;
+            var text_remaining = text_task - text_length;
+            $(this).next().find('.characters-task').html(text_remaining);
+        });
+        //verbal response
+        var text_verbal = 1000;
+        $('.characters-verbal').html(text_verbal);
+
+        $('body').on('keyup', '.text-verbal', function () {
+            var text_length = $(this).val().length;
+            var text_remaining = text_task - text_length;
+            $(this).next().find('.characters-verbal').html(text_remaining);
+
+        });
+        //written response
+        var text_written = 1000;
+        $('.characters-written').html(text_written);
+
+        $('body').on('keyup', '.text-written', function () {
+            var text_length = $(this).val().length;
+            var text_remaining = text_written - text_length;
+            $(this).next().find('.characters-written').html(text_remaining);
+        });
+        //Multiple Choice
+        var text_multiple = 1000;
+        $('.characters-multiple').html(text_multiple);
+
+        $('body').on('keyup', '.text-multiple', function () {
+            var text_length = $(this).val().length;
+            var text_remaining = text_multiple - text_length;
+            $(this).next().find('.characters-multiple').html(text_remaining);
+        });
+        //rating scale
+        var text_rating = 1000;
+        $('.characters-rating').html(text_rating);
+        $('body').on('keyup', '.text-rating', function () {
+            var text_length = $(this).val().length;
+            var text_remaining = text_rating - text_length;
+            $(this).next().find('.characters-rating').html(text_remaining);
+        });
+        //rating scale slt options split
+        $('body').on('change', '.options_rating', function () {
+            let text = $(this).val();
+            var myArray = text.split("-");
+            $(this).closest('.row').find('.first_endpoint').val(myArray[0]);
+            $(this).closest('.row').find('.second_endpoint').val(myArray[1]);
+        });
+
+    });
+    //remove item
+    $("body").on("click", ".remove-new-fields", function () {
+        $(this).closest('.items-row-outer').remove();
+        mulcount--;
+    });
+
+    function add_more_options(ele) {
+        var opt = '<div class="row items-row-outer">' +
+            '<div class="col-md-11">' +
+            '<div class="form-group  ">' +
+            '<input type="text" name="multiple[option_' + (mulcount++) + ']" class="form-control answer" placeholder="Answer">' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-1">' +
+            '<span class="btn btn-sm btn-danger waves-effect waves-light"><span class="remove-new-fields">-</span></span>' +
+            '</div>' +
+            '</div>';
+
+        //$('.more-options').append(opt);
+        $(opt).insertBefore(ele);
+
+    }
+
+    window.onscroll = function () { scrollFunction() };
+    //Get the button
+    var mybutton = document.getElementById("myBtn");
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "flex";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    function collapse(event) {
+        if ($('#navbarToggleExternalContent')[0].attributes.class.nodeValue === 'collapse show') {
+            $('#body-wrapper')[0].style.marginTop = '5%';
+        } else {
+            $('#body-wrapper')[0].style.marginTop = '21%';
+        }
+    }
+
+    
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+    function url() {
+        $('#main_content_type').removeClass('d-none');
+        var embed_url = $('.card_url').clone().removeClass('d-none');
+        embed_url.removeClass('card_url');
+        //$(embed_url).insertAfter('.content_type');
+        $('.content_type').append(embed_url);
+
+        $('html,body').animate({
+            scrollTop: $("#for_scroll").offset().top
+        }, 'slow');
+    }
+    function image_task(s_type) {
+        $('#main_content_type').removeClass('d-none');
+
+        var embed_image = '<div class="card mb-3">' +
+            '<div class="card-header">' +
+            '<strong>Image Task</strong>' +
+            '<button type="button" class="close" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '</button>' +
+            '</div>' +
+            '<div class="card-body">' +
+            '<div class="row">' +
+            '<div class="col-md-12">' +
+            '<strong>NOTE:</strong> <label>Please provide relevant names to your Image files. This allows the test creator to assign images to accurate tasks</label></div>' +
+            '<div class="col-md-9">' +
+
+            '<div class="form-group">' +
+            '<label for="exampleFormControlTextarea1">Image</label>' +
+            '<input type="file" id="img" class="form-control required"  accept="image/*"  name="image_task[' + tskcount + '][]" multiple="" onchange="loadImg()">' +
+
+            '</div>' +
+
+            '</div>' +
+            '<div class="col-md-3">' +
+            '<img src="images/placeholder.png" id="frame"  width="100px" height="100px"/>' +
+            '</div>' +
+            '</div>' +
+            '<div class="form-group">' +
+            '<label for="exampleFormControlTextarea1">Instruction text</label>' +
+            '<small class="form-text text-muted">Participants will be shown the provided image when they begin this task.</small>' +
+            '<textarea class="form-control required" name="image_task[instruction_text][' + tskcount + ']" rows="6" id="text-image" maxlength="200"></textarea>' +
+            '<small class="form-text text-muted float-right">Characters left: <span id="characters-image"></span></small>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
+        $('.content_type').append(embed_image);
+
+        tskcount++;
+        $('html,body').animate({
+            scrollTop: $("#for_scroll").offset().top
+        }, 'slow');
+
+    }
+    function task() {
+        $('#main_content_type').removeClass('d-none');
+        var embed_task = $('.task').clone().removeClass('d-none');
+        embed_task.removeClass('task');
+        $('.content_type').append(embed_task);
+        $('html,body').animate({
+            scrollTop: $("#for_scroll").offset().top
+        }, 'slow');
+
+    }
+    function verbal_response() {
+        $('#main_content_type').removeClass('d-none');
+        var embed_verbal = $('.verbal_response').clone().removeClass('d-none');
+        embed_verbal.removeClass('verbal_response');
+        $('.content_type').append(embed_verbal);
+        $('html,body').animate({
+            scrollTop: $("#for_scroll").offset().top
+        }, 'slow');
+
+    }
+    function multiple_choice() {
+
+        $('#main_content_type').removeClass('d-none');
+        var embed_multiple = $('.multiple_choice').clone().removeClass('d-none');
+        embed_multiple.removeClass('multiple_choice');
+
+        $('.content_type').append(embed_multiple);
+        $('html,body').animate({
+            scrollTop: $("#for_scroll").offset().top
+        }, 'slow');
+    }
+
+    function written_response() {
+        $('#main_content_type').removeClass('d-none');
+        var embed_written = $('.written_response').clone().removeClass('d-none');
+        embed_written.removeClass('written_response');
+        $('.content_type').append(embed_written);
+        $('html,body').animate({
+            scrollTop: $("#for_scroll").offset().top
+        }, 'slow');
+
+    }
+    //Rating scale
+    function rating_scale() {
+        $('#main_content_type').removeClass('d-none');
+        var embed_written = $('.rating_scale').clone().removeClass('d-none');
+        embed_written.removeClass('rating_scale');
+        $('.content_type').append(embed_written);
+        $('html,body').animate({
+            scrollTop: $("#for_scroll").offset().top
+        }, 'slow');
+
+    }
+
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+    function loadImg() {
+        var images = JSON.parse(localStorage.getItem("images"));
+
+        const fileObj = event.target.files;
+        let arr = Object.keys(fileObj).map((k) => fileObj[k])
+        arr.forEach(file => {
+            getBase64(file).then(data => {
+                const imageDetail = {
+                    binary: data.replace(/^data:image\/[a-z]+;base64,/, ""),
+                    name: file.name
+                }
+                images.push(imageDetail);
+                localStorage.setItem("images", JSON.stringify(images));
+
+
+            });
+
+        })
+    }
+</script>
+
+</html>
